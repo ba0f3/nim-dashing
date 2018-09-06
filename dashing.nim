@@ -172,6 +172,9 @@ proc setColor(c: string) =
 
 proc drawBorders(self: Tile, tbox: TBox) =
   # top border
+  if not DEFAULT_SHOW_BORDERS:
+    return
+
   setCursorAt(tbox.x, tbox.y)
 
   if not self.borderColor.isEmpty():
