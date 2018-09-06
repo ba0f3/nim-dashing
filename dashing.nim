@@ -5,6 +5,11 @@
 import os, terminal, strutils, json
 from ospaths import getEnv, getConfigDir
 
+proc isTrueColor(): bool =
+  return getEnv("COLORTERM").contains("truecolor") or getEnv("COLORTERM").contains("24bit")
+
+const TRUECOLOR = isTrueColor()
+
 let log = open("dashing.log", fmAppend)
 
 const
@@ -57,15 +62,12 @@ type
     of Text:
       text*: string
 
-
   RGBColor = tuple
     r, g, b: int
   
   #TODO: give this a different range depending on terminal color type
   ColorRange = range[0..MAX_COLORS]
-
 # #
-
 
 proc newColor(x: int): ColorRange =
   return ColorRange(x)
