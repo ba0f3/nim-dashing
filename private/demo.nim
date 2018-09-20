@@ -8,7 +8,7 @@ import math,
 
 from os import sleep
 
-import dashing
+import ../dashing
 
 proc demo() =
   ## Demo

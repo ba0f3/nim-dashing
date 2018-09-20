@@ -5,7 +5,7 @@
 import os, terminal, strutils, json
 from ospaths import getEnv, getConfigDir
 
-let log = open("dashing.log", fmAppend)
+#let log = open("dashing.log", fmAppend)
 
 const
   border_bl = "└"
@@ -36,7 +36,7 @@ type
 
   Tile* = ref object of RootObj
     title*: string
-    borderColor*: ColorRange 
+    borderColor*: ColorRange
     color*: ColorRange
     titleColor*: ColorRange
     lowColor*, midColor*, highColor*: ColorRange
@@ -100,7 +100,7 @@ proc setCursorAt*(x, y: int) =
     set_cursor_pos(x, y)
 
 proc isEmpty(s: string): bool =
-  s.isNil
+  s.len == 0
 
 proc isEmpty(c: ColorRange): bool =
   ord(c) == 0
@@ -143,7 +143,7 @@ proc setColor(c: int) =
 
 proc setColor(c: string) =
   ## Set foreground color
-  if c.isNil or c == "":
+  if c.isEmpty:
     return
   setColor(parseInt(c))
 
@@ -479,7 +479,7 @@ proc idisplay(self: Tile, tbox: TBox, parent: Tile) =
 
 proc display*(self: Tile) =
   ## Render current tile and its items. Recurse into nested splits if any.
-  let tbox = newTBox("", 1, 1, terminalWidth(), terminalHeight() - 1)
+  let tbox = newTBox("", 0, 0, terminalWidth(), terminalHeight())
   #self.idisplay(tbox, Tile())
   # park cursor in a safe place and reset color
   #FIXME print(t.move(terminal_height() - 3, 0) + t.color(0))
@@ -524,5 +524,9 @@ when isMainModule:
   ])
 
   erase_screen()
+  var i = 0
   while true:
+    ui.items[0].items[1].add_log("log n." & $i)
+    inc(i)
     display(ui)
+    sleep(100)
